@@ -1,0 +1,30 @@
+{
+    "login_data": {
+        "valid_user": {
+            "mobile": "9999999999",
+            "email": "testuser@example.com",
+            "password": "Test@123"
+        },
+        "invalid_user": {
+            "mobile": "1234567890",
+            "password": "wrongpassword"
+        }
+    },
+    "search_data": {
+        "valid_products": ["iPhone 15", "Samsung Galaxy", "Nike Shoes", "Laptop"],
+        "invalid_products": ["xyznonexistent123"]
+    },
+    "address_data": {
+        "valid_pincode": "560001",
+        "invalid_pincode": "000000",
+        "full_address": {
+            "name": "Test User",
+            "mobile": "9999999999",
+            "pincode": "560001",
+            "locality": "MG Road",
+            "address": "123 Test Street",
+            "city": "Bangalore",
+            "state": "Karnataka"
+        }
+    }
+}

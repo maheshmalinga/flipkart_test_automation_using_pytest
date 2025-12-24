@@ -1,0 +1,35 @@
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/test_login.py
+
+# Run specific test class
+pytest tests/test_login.py::TestLogin
+
+# Run specific test method
+pytest tests/test_login.py::TestLogin::test_login_page_is_displayed
+
+# Run tests with specific marker
+pytest -m smoke
+pytest -m regression
+pytest -m "smoke and login"
+pytest -m "not regression"
+
+# Run with HTML report
+pytest --html=reports/report.html
+
+# Run in parallel (install pytest-xdist)
+pytest -n auto
+
+# Run with detailed output
+pytest -v -s
+
+# Run and stop at first failure
+pytest -x
+
+# Run last failed tests
+pytest --lf
