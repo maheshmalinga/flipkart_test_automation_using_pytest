@@ -74,9 +74,8 @@ class BasePage:
     # ==================== ADVANCED ACTIONS ====================
 
     def hover_over_element(self, locator):
-        element = self.driver.find_element(locator)
+        element = self.wait.until(EC.presence_of_element_located(locator))
         self.actions.move_to_element(element).perform()
-        print(f"Hovered over element: {locator}")
 
     def double_click(self, locator):
         element = self.driver.driver.driver.find_element(locator)

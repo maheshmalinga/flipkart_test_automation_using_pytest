@@ -1,30 +1,24 @@
-# conftest.py
+
 import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options
 
 from pages.home_page import HomePage
-from utils import config  # Make sure you have this config file
+from utils import config
 
 
 # ==================== BROWSER FIXTURES ====================
 
-@pytest.fixture(params=["chrome"])
-def driver(request):
-    browser = request.param
-    print(f"\nInitializing {browser} browser...")
-
-    if browser == "chrome":
-        options = webdriver.ChromeOptions()
-        if config.HEADLESS:
-            options.add_argument("--headless")
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-notifications")
-        options.add_argument("--disable-popup-blocking")
-
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+@pytest.fixture()
+def driver():
+    options = Options()
+    if config.HEADLESS:
+        options.add_argument("--headless")
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-popup-blocking")
+    if config.BROWSER == "chrome":
+        driver = Chrome(options=options)
 
     driver.implicitly_wait(config.IMPLICIT_WAIT)
     driver.set_page_load_timeout(config.PAGE_LOAD_TIMEOUT)
@@ -33,40 +27,22 @@ def driver(request):
     driver.quit()
 
 
-@pytest.fixture(params=["chrome"], scope="class")
-def driver1(request):
-    browser = request.param
-    print(f"\nInitializing {browser} browser for class scope...")
-
-    if browser == "chrome":
-        options = webdriver.ChromeOptions()
-        if config.HEADLESS:
-            options.add_argument("--headless")
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-notifications")
-        options.add_argument("--disable-popup-blocking")
-
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+@pytest.fixture(scope="class")
+def driver1():
+    options = Options()
+    if config.HEADLESS:
+        options.add_argument("--headless")
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-popup-blocking")
+    if config.BROWSER == "chrome":
+        driver = Chrome(options=options)
 
     driver.implicitly_wait(config.IMPLICIT_WAIT)
     driver.set_page_load_timeout(config.PAGE_LOAD_TIMEOUT)
-    driver.maximize_window()
 
     yield driver
     driver.quit()
-
-
-# ==================== PAGE FIXTURES ====================
-
-@pytest.fixture
-def home(driver):
-    home = HomePage(driver)
-    home.open_homepage()
-    try:
-        home.close_pop_up()
-    finally:
-        return home
-
 
 
 # # ==================== HOOK: AUTOMATIC SCREENSHOTS ====================
@@ -106,7 +82,7 @@ def home(driver):
 #             # Take and save screenshot
 #             try:
 #                 driver.save_screenshot(screenshot_path)
-#                 print(f"\n📸 Screenshot saved: {screenshot_path}")
+#                 print(f"\nScreenshot saved: {screenshot_path}")
 #
 #                 # Attach to pytest-html report if available
 #                 if extras and os.path.exists(screenshot_path):
@@ -114,4 +90,4 @@ def home(driver):
 #                     extra.append(extras.image(screenshot_path))
 #                     report.extra = extra
 #             except Exception as e:
-#                 print(f"⚠️ Failed to take screenshot: {str(e)}")
+#                 print(f"Failed to take screenshot: {str(e)}")
